@@ -1,3 +1,4 @@
+import java.util.*;
 public class FracCalc {
 
     /**
@@ -6,6 +7,11 @@ public class FracCalc {
      */
     public static void main(String[] args) 
     {
+    	Scanner console = new Scanner(System.in); 
+    	System.out.println("Please enter the operation you would like.");
+    	String operation = console.nextLine();
+    	String secondoperand = produceAnswer(operation);
+    	System.out.println(secondoperand);
         // TODO: Read the input from the user and call produceAnswer with an equation
         // Checkpoint 1: Create a Scanner, read one line of input, pass that input to produceAnswer, print the result.
         // Checkpoint 2: Accept user input multiple times.
@@ -20,6 +26,14 @@ public class FracCalc {
      */
     public static String produceAnswer(String input)
     { 
+    	int x= input.indexOf(" ");
+    	
+    	String first = input.substring(0,x+1);
+    	String space = input.substring(x+1);
+    	int space2=space.indexOf(" ");
+    	String operator=space.substring(0, space2+1);
+    	String secondoperand =space.substring(space2+1);
+    	return secondoperand;
         // TODO: Implement this function to produce the solution to the input
         // Checkpoint 1: Return the second operand.  Example "4/5 * 1_2/4" returns "1_2/4".
         // Checkpoint 2: Return the second operand as a string representing each part.

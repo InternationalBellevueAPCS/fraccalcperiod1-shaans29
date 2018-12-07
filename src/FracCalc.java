@@ -9,14 +9,19 @@ public class FracCalc {
     {
     	Scanner console = new Scanner(System.in); 
     	System.out.println("Please enter the operation you would like.");
-    	String operation = console.nextLine();
+    	String operation = "";
+    	operation = console.nextLine();
+    	while (!operation.equals("quit"))
+    	{
     	String secondoperand = produceAnswer(operation);
     	System.out.println(secondoperand);
+    	System.out.println("Please enter another operation.");
+		operation = console.nextLine();
         // TODO: Read the input from the user and call produceAnswer with an equation
         // Checkpoint 1: Create a Scanner, read one line of input, pass that input to produceAnswer, print the result.
         // Checkpoint 2: Accept user input multiple times.
+    	}
     }
-    
     /**
      * produceAnswer - This function takes a String 'input' and produces the result.
      * @param input - A fraction string that needs to be evaluated.  For your program, this will be the user input.
@@ -33,7 +38,32 @@ public class FracCalc {
     	int space2=space.indexOf(" ");
     	String operator=space.substring(0, space2+1);
     	String secondoperand =space.substring(space2+1);
-    	return secondoperand;
+    	int slash = secondoperand.indexOf("/");
+    	int underscore = secondoperand.indexOf("_");
+    	int denom = 0;
+    	int num = 0;
+    	int numerator = 0;
+    	String numS = ("");
+    	String denomS= ("");
+    	String numeratorS = ("");
+    	if (slash != -1 && underscore>0) {
+			numS = secondoperand.substring(0, underscore);
+			numeratorS = secondoperand.substring(underscore + 1, slash);
+			denomS = secondoperand.substring(slash + 1, secondoperand.length());
+		} else if (slash == -1) {
+			numS = secondoperand;
+			numeratorS = ("0");
+			denomS = ("1");
+		} else if (underscore == -1) {
+			numS = ("0");
+			numeratorS = secondoperand.substring(underscore + 1, slash);
+			denomS = secondoperand.substring(slash + 1, secondoperand.length());
+		}
+		num = Integer.parseInt(numS);
+		numerator = Integer.parseInt(numeratorS);
+		denom = Integer.parseInt(denomS);
+		secondoperand=("whole:" + num + " " + "numerator:" + numerator + " " + "denominator:" + denom );
+		return secondoperand;
         // TODO: Implement this function to produce the solution to the input
         // Checkpoint 1: Return the second operand.  Example "4/5 * 1_2/4" returns "1_2/4".
         // Checkpoint 2: Return the second operand as a string representing each part.

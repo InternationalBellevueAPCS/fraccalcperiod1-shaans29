@@ -74,7 +74,6 @@ public class FracCalc {
         // Final project: All answers must be reduced.
         //               Example "4/5 * 1_2/4" returns "1_1/5".
         
-        return "";
     }
 
     // TODO: Fill in the space below with helper methods

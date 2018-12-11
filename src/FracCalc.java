@@ -7,6 +7,7 @@ public class FracCalc {
      */
     public static void main(String[] args) 
     {
+    	
     	Scanner console = new Scanner(System.in); 
     	System.out.println("Please enter the operation you would like.");
     	String operation = "";

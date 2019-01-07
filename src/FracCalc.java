@@ -1,209 +1,170 @@
-
 import java.util.*;
 
 public class FracCalc {
 
     /**
-     * Prompts user for input, passes that input to produceAnswer, then outputs the result.
-     * @param args - unused
+     * Continually prompts user to input an arithmetic expression, passes that input to produceAnswer() and then prints the result of the expression
+     * until user enters "quit".
      */
-    public static void main(String[] args) 
-    {
-       Scanner console = new Scanner(System.in); //user inputs their equation
-       System.out.print("Type in your equation (type quit to stop): ");
-       String equation = console.nextLine();
-       while (equation!="x") {
-             System.out.println(produceAnswer(equation));
-             System.out.print("Type in an equation (press quit to stop): ");
-             equation = console.nextLine();
-             if (equation.equals("quit")) { //if user enters quit, breaks from code
-                    break;
-             }
-       }
-             System.out.print("");
-             
-       }
-       
-        // TODO: Read the input from the user and call produceAnswer with an equation
-        // Checkpoint 1: Create a Scanner, read one line of input, pass that input to produceAnswer, print the result.
-        // Checkpoint 2: Accept user input multiple times.
-    
+    public static void main(String[] args) {
+    	Scanner console = new Scanner(System.in);
+    	String expression = console.nextLine();
+    	while (!expression.equalsIgnoreCase("quit")) {
+        	String expressionAnswer = produceAnswer(expression);
+        	System.out.println(expressionAnswer);
+    		expression = console.nextLine();
+    	}
+    }
     
     /**
-     * produceAnswer - This function takes a String 'input' and produces the result.
-     * @param input - A fraction string that needs to be evaluated.  For your program, this will be the user input.
+     * produceAnswer - This function takes a String 'expression' and produces the result.
+     * @param expression - A fraction string that needs to be evaluated.  For your program, this will be the user input.
      *      Example: input ==> "1/2 + 3/4"
      * @return the result of the fraction after it has been calculated.
      *      Example: return ==> "1_1/4"
      */
-    public static int whole(String str) { //runs various if statements depending on whether the string contains a "_" or "/"
-        if (str.contains("_")) {
-              return Integer.parseInt(str.substring(0, str.indexOf('_')));
-        }else if (str.contains("/")) {
-              return 0;
-        }else{
-              return Integer.parseInt(str) ;
-        }
-        
-        }
-        
-        
-              
-     public static int numer(String str) { 
-        if (str.contains("_")) {
-              return Integer.parseInt(str.substring(str.indexOf('_')+1, str.indexOf('/')));
-        }else if (str.contains("/")) {
-              return Integer.parseInt(str.substring(0, str.indexOf('/')));
-        }else {
-              return 0;
-        }
-     }
-        
-     public static int denomer(String str) {
-        if (str.contains("/")) {
-              return Integer.parseInt(str.substring(str.indexOf("/")+1));
-        }else{
-              return 1;
-        }
-              
-        }
-     
-    public static String produceAnswer(String input)
-    { 
-        // TODO: Implement this function to produce the solution to the input
-        // Checkpoint 1: Return the second operand.  Example "4/5 * 1_2/4" returns "1_2/4".
-        // Checkpoint 2: Return the second operand as a string representing each part.
-        //               Example "4/5 * 1_2/4" returns "whole:1 numerator:2 denominator:4".
-        // Checkpoint 3: Evaluate the formula and return the result as a fraction.
-        //               Example "4/5 * 1_2/4" returns "6/5".
-        //               Note: Answer does not need to be reduced, but it must be correct.
-        // Final project: All answers must be reduced.
-        //               Example "4/5 * 1_2/4" returns "1_1/5".
+    public static String produceAnswer(String expression) {
+        /* Break up line of input into the following strings:
+           1. First operand
+           2. Arithmetic operator (+ - * /)
+           3. Second operand
+        */
+    	String operand1 = expression.substring(0, expression.indexOf(" "));
+    	String restOfExpression = expression.substring(expression.indexOf(" ") + 1);
+    	String operator = restOfExpression.substring(0, restOfExpression.indexOf(" "));
+    	String operand2 = restOfExpression.substring(restOfExpression.indexOf(" ") + 1);
     	
-       Scanner console = new Scanner(input);
-       
-        String first = console.next();
-        String operand = console.next();
-        String second = console.next();
-        //declaring variables 
-        int firstWhole = whole(first);
-        int firstNum = numer(first);
-        int firstDenom = denomer(first);
-        
-        int secondWhole = whole(second);
-        int secondNum = numer(second);
-        int secondDenom = denomer(second);
-        
-        int resultWhole =0;
-        int resultNum = 0;
-        int resultDenom =0;
-        
-        int holder =0;
-        
-        int lcm =0;
-        int one =0;
-        int two =0;
-        
-        String whole = "";
-        String num = "";
-        String denom ="";
-        
-        String answer ="";
-        
-        if (operand.equals("+")) { //if operand equals additions sign runs through various if statements 
-             resultWhole = firstWhole + secondWhole;
-             whole = Integer.toString(resultWhole)+ "_";
-             
-             
-             if (firstDenom == secondDenom) {
-                    resultNum = firstNum + secondNum;
-             }else {
-                    lcm = leastCommonMultiple(firstDenom, secondDenom);                     
-                    one = lcm/firstDenom;
-                    two = lcm/secondDenom;
-                    firstNum*=one;
-                    secondNum*=two;
-                    resultNum = firstNum + secondNum;
-                    
-             }
-             num = Integer.toString(firstNum+secondNum);
-             denom = Integer.toString(leastCommonMultiple(firstDenom, secondDenom));
-             answer = whole + num + "/" + denom;
-        }        
-        if (operand.equals("-")) { //if operand equals dash runs through various if statements 
-             /*resultWhole = firstWhole - secondWhole;
-             whole = Integer.toString(resultWhole)+ "_";*/
-             
-             
-             if (firstDenom == secondDenom) {
-                    firstNum = firstNum + (firstWhole*firstDenom);
-                    
-                    secondNum = secondNum + (secondWhole*secondDenom);
-                    
-                    resultNum = firstNum - secondNum;
-             }else {
-                    firstNum = firstNum + (firstWhole*firstDenom);
-                    
-                    secondNum = secondNum + (secondWhole*secondDenom);
-                    
-                    lcm = leastCommonMultiple(firstDenom, secondDenom);                     
-                    one = lcm/firstDenom;
-                    two = lcm/secondDenom;
-                    firstNum*=one;
-                    secondNum*=two;
-                    resultNum = firstNum-secondNum;
-                    
-             }
-             num = Integer.toString(resultNum);
-             denom = Integer.toString(leastCommonMultiple(firstDenom, secondDenom));
-             answer = whole + num + "/" + denom;
-        }
-        if (operand.equals("*")) { //if operand equals asterik runs through various if statements 
-             if (firstWhole != 0) {
-                    firstNum = firstNum + (firstWhole*firstDenom); 
-                    firstWhole = 0;
-             }
-             if (secondWhole != 0) {
-                    secondNum = secondNum + (secondWhole*secondDenom);   
-                    secondWhole = 0;
-             }
-   
-             resultNum = firstNum*secondNum;
-             resultDenom = firstDenom*secondDenom;
-             num = Integer.toString(resultNum);
-             denom = Integer.toString(resultDenom);
-             answer = num+ "/" + denom;
-             if (Integer.parseInt(denom)==1)
-             {
-            	 answer=num;
-             }
-        }
-        if (operand.equals("/")) { //if operand equals bracket runs trhoguh various if statements 
-             if (firstWhole>0) {
-                    firstNum = firstNum + (firstWhole*firstDenom);               
-             }
-             if (secondWhole>0) {
-                    secondNum = secondNum + (secondWhole*secondDenom);                     
-             }
-             holder = secondNum;
-             secondNum = secondDenom;
-             secondDenom = holder;
-             resultNum = firstNum*secondNum;
-             resultDenom = firstDenom*secondDenom;
-             num = Integer.toString(resultNum);
-             denom = Integer.toString(resultDenom);
-             answer = num+ "/" + denom;
-        }
-        
-        return answer;
+    	int whole1;
+    	int numerator1;
+    	int denominator1;
+    	int whole2;
+    	int numerator2;
+    	int denominator2;
+    	
+    	// Break up each operand into whole number, numerator and denominator
+    	if (operand1.contains("_")) { // The first operand is a mixed number
+    		whole1 = Integer.parseInt(operand1.substring(0, operand1.indexOf('_')));
+    		numerator1 = Integer.parseInt(operand1.substring(operand1.indexOf('_') + 1, operand1.indexOf('/')));
+    		denominator1 = Integer.parseInt(operand1.substring(operand1.indexOf('/') + 1));
+    	}
+    	else if (operand1.contains("/")) { // The first operand is a fraction (whole number is 0)
+    		whole1 = 0;
+    		numerator1 = Integer.parseInt(operand1.substring(0, operand1.indexOf('/')));
+    		denominator1 = Integer.parseInt(operand1.substring(operand1.indexOf('/') + 1));
+    	}
+    	else { // The first operand is an integer (numerator is 0, denominator is 1)
+    		whole1 = Integer.parseInt(operand1);
+			numerator1 = 0;
+			denominator1 = 1;
+    	}
+    	if (operand2.contains("_")) { // The second operand is a mixed number
+    		whole2 = Integer.parseInt(operand2.substring(0, operand2.indexOf('_')));
+    		numerator2 = Integer.parseInt(operand2.substring(operand2.indexOf('_') + 1, operand2.indexOf('/')));
+    		denominator2 = Integer.parseInt(operand2.substring(operand2.indexOf('/') + 1));
+    	}
+    	else if (operand2.contains("/")) { // The second operand is a fraction (whole number is 0)
+    		whole2 = 0;
+    		numerator2 = Integer.parseInt(operand2.substring(0, operand2.indexOf('/')));
+    		denominator2 = Integer.parseInt(operand2.substring(operand2.indexOf('/') + 1));
+    	}
+    	else { // The second operand is an integer (numerator is 0, denominator is 1)
+    		whole2 = Integer.parseInt(operand2);
+			numerator2 = 0;
+			denominator2 = 1;
+    	}
+    	
+    	// Calculate the result of the expression
+        if (operator.equals("+") || operator.equals("-"))
+        	return(addOrSubtract(whole1, numerator1, denominator1, whole2, numerator2, denominator2, operator.equals("+")));
+        else
+        	return(multiplyOrDivide(whole1, numerator1, denominator1, whole2, numerator2, denominator2, operator.equals("*")));
     }
     
+    // Final project: All answers must be reduced.
+    //                Example "4/5 * 1_2/4" returns "1_1/5".
+    public static String addOrSubtract(int whole1, int num1, int den1, int whole2, int num2, int den2, boolean add) {
+    	int commonDen;
+		int newNum;
+    	if (num1 == 0) // The first operand is an integer
+    		num1 = whole1;
+    	else
+    		if ((whole1 != 0) && (num1 != 0)) { // The first operand is a mixed number
+    			num1 = (den1 * Math.abs(whole1)) + num1;
+    			if (whole1 < 0)
+    				num1 *= -1;
+    		}
+    	if (num2 == 0) // The second operand is an integer
+    		num2 = whole2;
+    	else
+    		if ((whole2 != 0) && (num2 != 0)) { // The second operand is a mixed number
+    			num2 = (den2 * Math.abs(whole2)) + num2;
+    			if (whole2 < 0)
+    				num2 *= -1;
+			}
+    	
+    	if (den1 != den2) { // If denominators are different, then find the lowest common denominator
+    		commonDen = leastCommonMultiple(den1, den2);
+    		int multiplier1 = commonDen / den1;
+    		int multiplier2 = commonDen / den2;
+    		int newNum1 = num1 * multiplier1;
+    		int newNum2 = num2 * multiplier2;
+    		if (add)
+    			newNum = newNum1 + newNum2;
+    		else
+    			newNum = newNum1 - newNum2;
+    	}
+    	else { // The denominators are the same
+    		commonDen = den1;
+    		if (add)
+    			newNum = num1 + num2;
+    		else
+    			newNum = num1 - num2;
+    	}
+    	return(newNum + "/" + commonDen);
+    }
+    
+    public static String multiplyOrDivide(int whole1, int num1, int den1, int whole2, int num2, int den2, boolean multiply) {
+    	int newNum;
+    	int newDen;
+    	if (num1 == 0) // The first operand is an integer
+    		num1 = whole1;
+    	else
+    		if ((whole1 != 0) && (num1 != 0)) { // The first operand is a mixed number
+    			num1 = (den1 * Math.abs(whole1)) + num1;
+    			if (whole1 < 0)
+    					num1 *= -1;
+			}
+    	if (num2 == 0) // The second operand is an integer
+    		num2 = whole2;
+    	else
+    		if ((whole2 != 0) && (num2 != 0)) { // The second operand is a mixed number
+    			num2 = (den2 * Math.abs(whole2)) + num2;
+    			if (whole2 < 0)
+    					num2 *= -1;
+			}
+    	if (multiply) {
+    		newNum = num1 * num2;
+    		newDen = den1 * den2;
+    	}
+    	else { // When dividing fractions, multiply by the reciprocal of the second fraction (operand)
+    		newNum = num1 * den2;
+    		newDen = den1 * num2;
+    	}
+    	return(newNum + "/" + newDen);
+    }
+    
+    /* public static String improperToMixed(String fraction) {
+    	int num;
+    	int den;
+    	if (num > den) {
+    		int whole = num / den;
+    		int numerator = num - (whole * den);
+    	}
+    }
+    */
 
     // TODO: Fill in the space below with helper methods
     
-       
-    
-   
     /**
      * greatestCommonDivisor - Find the largest integer that evenly divides two integers.
      *      Use this helper method in the Final Checkpoint to reduce fractions.
@@ -212,8 +173,7 @@ public class FracCalc {
      * @param b - Second integer.
      * @return The GCD.
      */
-    public static int greatestCommonDivisor(int a, int b)
-    {
+    public static int greatestCommonDivisor(int a, int b) {
         a = Math.abs(a);
         b = Math.abs(b);
         int max = Math.max(a, b);
@@ -233,8 +193,7 @@ public class FracCalc {
      * @param b - Second integer.
      * @return The LCM.
      */
-    public static int leastCommonMultiple(int a, int b)
-    {
+    public static int leastCommonMultiple(int a, int b) {
         int gcd = greatestCommonDivisor(a, b);
         return (a*b)/gcd;
     }
